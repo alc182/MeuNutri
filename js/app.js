@@ -185,9 +185,8 @@ const App = {
     document.getElementById('btn-confirm-meal').textContent =
       this.state.currentMealIndex < mealTypes.length - 1 ? 'Confirmar e Próxima ➜' : 'Ver Resumo ✓';
 
-    // Show back button only if not first meal
-    document.getElementById('btn-meal-back').style.display =
-      this.state.currentMealIndex > 0 ? 'flex' : 'none';
+    // Always show back button
+    document.getElementById('btn-meal-back').style.display = 'flex';
 
     this.showScreen('meal', 'forward');
   },
@@ -247,6 +246,12 @@ const App = {
   },
 
   goBackMeal() {
+    if (this.state.currentMealIndex === 0) {
+      // First meal - go back to config
+      this.goBackToConfig();
+      return;
+    }
+
     if (this.state.currentMealIndex > 0) {
       // Remove the previously selected meal for the current type being shown
       const currentType = this.state.selectedMealTypes[this.state.currentMealIndex];
@@ -320,8 +325,7 @@ const App = {
       document.getElementById('btn-confirm-meal').disabled = true;
       document.getElementById('btn-confirm-meal').textContent = 'Confirmar e Próxima ➜';
 
-      document.getElementById('btn-meal-back').style.display =
-        this.state.currentMealIndex > 0 ? 'flex' : 'none';
+      document.getElementById('btn-meal-back').style.display = 'flex';
     }
   },
 
