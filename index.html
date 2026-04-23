@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description"
+    content="MeuNutri - Planejador de dietas inteligente com cardápios prontos e controle de calorias e proteínas">
+  <meta name="theme-color" content="#0a0f1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>MeuNutri - Seu Planejador de Dietas</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- ========================================== -->
+    <!-- SCREEN: WELCOME                            -->
+    <!-- ========================================== -->
+    <div class="screen active" id="screen-welcome">
+      <div class="screen-content">
+        <div class="welcome-logo">🥗</div>
+        <h1 class="welcome-title">MeuNutri</h1>
+        <p class="welcome-subtitle">
+          Monte seu cardápio diário de forma inteligente, com controle de calorias e proteínas.
+        </p>
+        <div class="welcome-features">
+          <div class="welcome-feature">
+            <span class="welcome-feature-icon">📊</span>
+            <span class="welcome-feature-text">Controle Calórico</span>
+          </div>
+          <div class="welcome-feature">
+            <span class="welcome-feature-icon">💪</span>
+            <span class="welcome-feature-text">Foco em Proteína</span>
+          </div>
+          <div class="welcome-feature">
+            <span class="welcome-feature-icon">🍽️</span>
+            <span class="welcome-feature-text">40+ Receitas</span>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="App.goToConfig()" id="btn-welcome-start">
+          Começar 🚀
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCREEN: CONFIGURATION                      -->
+    <!-- ========================================== -->
+    <div class="screen" id="screen-config">
+      <div class="screen-content">
+        <button class="btn-back" onclick="App.restart()">
+          ← Voltar
+        </button>
+
+        <h2 class="screen-title">Configure seu dia</h2>
+
+        <!-- TMB Range Selection -->
+        <div class="config-section">
+          <h3 class="section-title">🔥 Faixa de Taxa Metabólica</h3>
+          <p class="section-subtitle">Selecione a faixa que mais se aproxima da sua TMB</p>
+          <div class="tmb-options" id="tmb-options">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Meal Type Selection -->
+        <div class="config-section">
+          <h3 class="section-title">🍴 Refeições do Dia</h3>
+          <p class="section-subtitle">Quais refeições você vai fazer hoje?</p>
+          <div class="meal-toggles">
+            <div class="meal-toggle" data-meal-type="breakfast">
+              <span class="meal-toggle-icon">☕</span>
+              <span class="meal-toggle-label">Café da Manhã</span>
+              <span class="meal-toggle-check">✓</span>
+            </div>
+            <div class="meal-toggle" data-meal-type="lunch">
+              <span class="meal-toggle-icon">🍽️</span>
+              <span class="meal-toggle-label">Almoço</span>
+              <span class="meal-toggle-check">✓</span>
+            </div>
+            <div class="meal-toggle" data-meal-type="snack">
+              <span class="meal-toggle-icon">🥪</span>
+              <span class="meal-toggle-label">Lanche</span>
+              <span class="meal-toggle-check">✓</span>
+            </div>
+            <div class="meal-toggle" data-meal-type="dinner">
+              <span class="meal-toggle-icon">🌙</span>
+              <span class="meal-toggle-label">Janta</span>
+              <span class="meal-toggle-check">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-bottom">
+          <button class="btn-primary" id="btn-start" disabled onclick="App.startSelection()">
+            Montar Cardápio 🍽️
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCREEN: MEAL SELECTION                     -->
+    <!-- ========================================== -->
+    <div class="screen" id="screen-meal">
+      <div class="screen-content">
+
+        <!-- Calorie Header -->
+        <div class="meal-header">
+          <div class="meal-header-top">
+            <span class="meal-header-icon" id="meal-screen-icon">☕</span>
+            <div class="meal-header-info">
+              <div class="meal-header-title" id="meal-screen-title">Café da Manhã</div>
+              <div class="meal-step" id="meal-step-indicator">Refeição 1 de 4</div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-labels">
+              <span>Consumido: <strong id="calories-consumed">0</strong> kcal</span>
+              <span>Meta: <strong id="calories-target">1.700</strong> kcal</span>
+            </div>
+          </div>
+
+          <!-- Calorie Budget -->
+          <div class="calorie-info">
+            <div class="calorie-box">
+              <div class="calorie-box-value" id="calories-remaining">1.700</div>
+              <div class="calorie-box-label">Restantes</div>
+            </div>
+            <div class="calorie-box highlight">
+              <div class="calorie-box-value" id="ideal-budget">425</div>
+              <div class="calorie-box-label">Sugerido p/ esta</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Previous meals chips -->
+        <div class="previous-meals" id="previous-meals" style="display: none;"></div>
+
+        <!-- Meal Cards -->
+        <div class="meal-grid" id="meal-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+      </div>
+
+      <!-- Sticky bottom buttons -->
+      <div class="meal-bottom">
+        <button class="btn-back" id="btn-meal-back" onclick="App.goBackMeal()" style="display: none;">
+          ←
+        </button>
+        <button class="btn-primary" id="btn-confirm-meal" disabled onclick="App.confirmMeal()">
+          Confirmar e Próxima ➜
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCREEN: SUMMARY                            -->
+    <!-- ========================================== -->
+    <div class="screen" id="screen-summary">
+      <div class="screen-content">
+        <h2 class="screen-title" style="text-align: center;">📋 Seu Cardápio do Dia</h2>
+
+        <!-- Progress Ring -->
+        <div class="summary-header">
+          <div class="summary-ring">
+            <svg width="140" height="140" viewBox="0 0 120 120">
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#22c55e" />
+                  <stop offset="100%" stop-color="#06b6d4" />
+                </linearGradient>
+              </defs>
+              <circle class="summary-ring-bg" cx="60" cy="60" r="54" />
+              <circle class="summary-ring-fill" id="summary-progress-circle" cx="60" cy="60" r="54" />
+            </svg>
+            <div class="summary-ring-text">
+              <div class="summary-percentage" id="summary-percentage">0%</div>
+              <div class="summary-of-target">da meta</div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="summary-stats">
+            <div class="summary-stat">
+              <div class="summary-stat-value" id="summary-total-cal">0</div>
+              <div class="summary-stat-label">Calorias</div>
+            </div>
+            <div class="summary-stat">
+              <div class="summary-stat-value" id="summary-target-cal">0</div>
+              <div class="summary-stat-label">Meta</div>
+            </div>
+            <div class="summary-stat">
+              <div class="summary-stat-value"><span id="summary-total-prot">0</span>g</div>
+              <div class="summary-stat-label">Proteína</div>
+            </div>
+          </div>
+
+          <div class="summary-diff" id="summary-diff"></div>
+        </div>
+
+        <!-- Selected meals list -->
+        <div class="summary-meals-list" id="summary-meals-list">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Restart button -->
+        <div class="summary-bottom">
+          <button class="btn-primary" onclick="App.restart()">
+            Recomeçar 🔄
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/meals.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
